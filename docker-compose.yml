@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  emulator_test:
+    build: ./emulator_test
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/emulator_test
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=emulator
+      - POSTGRES_USER=emulatoruser
+      - POSTGRES_PASSWORD=emulator
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+
+  celery:
+    restart: always
+    build: ./emulator_test
+    command: celery -A emulator_test worker -l info
+    volumes:
+      - .:/emulator_test
+    depends_on:
+      - db
+      - redis
+      - emulator_test
+
+  celery-beat:
+    build: ./emulator_test
+    command: celery -A emulator_test beat
+    volumes:
+      - .:/emulator_test
+    depends_on:
+      - db
+      - redis
+      - emulator_test
