@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-jx8i2z6gus7tfoahe(r30h^(mjjak@2e)nscxq7xls-nn+8bxm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -134,3 +134,6 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+
+# sheltered-dawn-19406
